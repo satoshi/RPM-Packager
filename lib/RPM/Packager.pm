@@ -1,52 +1,43 @@
 package RPM::Packager;
 
-use 5.006;
 use strict;
 use warnings;
 
 =head1 NAME
 
-RPM::Packager - The great new RPM::Packager!
+RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.01
+Version 0.0.1
 
 =cut
 
-our $VERSION = '0.01';
-
+our $VERSION = 'v0.0.1';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
+Building RPMs should be easy.
 
     use RPM::Packager;
 
-    my $foo = RPM::Packager->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+    my %args = (
+        name    => 'testpackage',
+        version => 'grep Changelog',
+        files   => { bin => '/usr/local/bin' },
+        os      => 'el6',
+    );
+    my $obj = RPM::Packager->new(%args);
+    $obj->create_rpm();
 
 =head1 SUBROUTINES/METHODS
 
-=head2 function1
+=head2 new(%args)
 
 =cut
 
 sub function1 {
-}
 
-=head2 function2
-
-=cut
-
-sub function2 {
 }
 
 =head1 AUTHOR
