@@ -2,6 +2,9 @@ package RPM::Packager;
 
 use strict;
 use warnings;
+use Data::Dumper;
+use File::Temp;
+use RPM::Packager::Utils;
 
 =head1 NAME
 
@@ -34,10 +37,28 @@ Building RPMs should be easy.
 
 =head2 new(%args)
 
+Constructor.  Pass in a hash containing manifest info.
+
 =cut
 
-sub function1 {
+sub new {
+    my ( $class, %args ) = @_;
+    my $self = {%args};
+    return bless $self, $class;
+}
 
+=head2 create_rpm
+
+Creates RPM based on the information in the object
+
+=cut
+
+sub create_rpm {
+    my $self = shift;
+
+    $self->{tempdir} = File::Temp->newdir();
+    my %mapping = %{ $self->{files} };
+    RPM::Packager::Utils::copy_to_tempdir( $self->{tempdir}, %mapping );
 }
 
 =head1 AUTHOR
@@ -129,4 +150,4 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
-1; # End of RPM::Packager
+1;    # End of RPM::Packager
