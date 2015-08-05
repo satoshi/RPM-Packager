@@ -47,6 +47,22 @@ sub new {
     return bless $self, $class;
 }
 
+sub find_version {
+    my $self  = shift;
+    my $value = $self->{version};
+    ( RPM::Packager::Utils::is_command($value) ) ? RPM::Packager::Utils::eval_command($value) : $value;
+}
+
+sub generate_dependency_opts {
+    my $self = shift;
+    my $dependencies = $self->{dependencies} || [];
+    my @chunks;
+    for my $dependency ( @{$dependencies} ) {
+        push @chunks, "-d '$dependency'";
+    }
+    return join( " ", @chunks );
+}
+
 =head2 create_rpm
 
 Creates RPM based on the information in the object
