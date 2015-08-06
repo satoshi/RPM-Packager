@@ -63,6 +63,13 @@ sub generate_dependency_opts {
     return join( " ", @chunks );
 }
 
+sub generate_user_group {
+    my $self  = shift;
+    my $user  = $self->{user} || 'root';
+    my $group = $self->{group} || 'root';
+    return ( $user, $group );
+}
+
 =head2 create_rpm
 
 Creates RPM based on the information in the object

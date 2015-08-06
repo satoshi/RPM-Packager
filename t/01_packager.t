@@ -29,6 +29,18 @@ subtest 'generate_dependency_opts', sub {
     is( $obj->generate_dependency_opts(), '', 'no dependencies specified' );
 };
 
+subtest 'generate_user_group', sub {
+    my $obj = RPM::Packager->new();
+    my ( $user, $group ) = $obj->generate_user_group();
+    is( $user,  'root', 'default is root' );
+    is( $group, 'root', 'default is root' );
+
+    $obj = RPM::Packager->new( user => 'pps', group => 'bar' );
+    ( $user, $group ) = $obj->generate_user_group();
+    is( $user,  'pps', 'pps user' );
+    is( $group, 'bar', 'bar group' );
+};
+
 #subtest 'create_rpm', sub {
 #    my %args = (
 #        name    => 'testpackage',
