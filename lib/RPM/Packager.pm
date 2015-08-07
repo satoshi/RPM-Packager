@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use File::Temp;
+use Cwd;
 use RPM::Packager::Utils;
 
 =head1 NAME
@@ -43,7 +44,18 @@ Constructor.  Pass in a hash containing manifest info.
 
 sub new {
     my ( $class, %args ) = @_;
-    my $self = {%args};
+    chomp( my $fpm   = `which fpm` );
+    chomp( my $mkdir = `which mkdir` );
+    chomp( my $cp    = `which cp` );
+
+    my $self = {
+        fpm     => $fpm,
+        mkdir   => $mkdir,
+        cp      => $cp,
+        cwd     => getcwd(),
+        tempdir => File::Temp->newdir(),
+        %args
+    };
     return bless $self, $class;
 }
 
@@ -70,6 +82,43 @@ sub generate_user_group {
     return ( $user, $group );
 }
 
+sub copy_to_tempdir {
+    my $self = shift;
+
+    my $cwd     = $self->{cwd};
+    my %hash    = %{ $self->{files} };
+    my $tempdir = $self->{tempdir};
+
+    for my $key ( keys %hash ) {
+        my $dst        = $hash{$key};
+        my $target_dir = "$tempdir$dst";
+        system("$self->{mkdir} -p $target_dir");
+        system("$self->{cp} -r $cwd/$key/* $target_dir");
+    }
+    return 1;
+}
+
+#sub populate_opts {
+#    my $self = shift;
+#    my $name = $self->{name};
+#    my $version = find_version();
+#    my $release = $ENV{BUILD_NUMBER} || 1;
+#    my $os = $self->{os};
+#    my $iteration = "$release.$os";
+#    my $dependency_opts = $self->generate_dependency_opts();
+#    my ( $user, $group ) = $self->generate_user_group();
+#    my $tmpdir = $self->{tempdir};
+#
+#    my @opts = (
+#        $self->{fpm},  '-v',          $version,   '--rpm-user', $user,    '--rpm-group',
+#        $group, '--iteration', $iteration, '-n',         $name, $dependency_opts,
+#        '-s',   'dir',         '-t',       'rpm',        '-C',     $tmpdir,
+#    );
+#    push @opts, '--rpm-sign', '--rpm-rpmbuild-define', "'_gpg_name E4D20D4C'" if ( $config->{sign} );
+#    push @opts, '.';
+#    return join( " ", @opts );
+#}
+
 =head2 create_rpm
 
 Creates RPM based on the information in the object
@@ -79,9 +128,7 @@ Creates RPM based on the information in the object
 sub create_rpm {
     my $self = shift;
 
-    $self->{tempdir} = File::Temp->newdir();
-    my %mapping = %{ $self->{files} };
-    RPM::Packager::Utils::copy_to_tempdir( $self->{tempdir}, %mapping );
+    $self->copy_to_tempdir();
 }
 
 =head1 AUTHOR

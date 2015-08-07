@@ -41,6 +41,25 @@ subtest 'generate_user_group', sub {
     is( $group, 'bar', 'bar group' );
 };
 
+subtest 'copy_to_tempdir', sub {
+    my %args = ( files => { 't/test_data' => '/usr/local/bin' } );
+    my $obj  = RPM::Packager->new(%args);
+    my $ret  = $obj->copy_to_tempdir();
+    is( $ret, 1, 'copy_to_tempdir succeeded' );
+};
+
+#subtest 'populate_opts', sub {
+#    my %args = (
+#        name    => 'testpackage',
+#        version => '3.2.1',
+#        files   => { bin => '/usr/local/bin' },
+#        os      => 'el6',
+#        fpm     => '/usr/local/bin/fpm' # dummy override on systems without fpm
+#    );
+#    my $obj = RPM::Packager->new(%args);
+#    is( $obj->populate_opts(), 'some_string_here', 'options generated successfully');
+#};
+
 #subtest 'create_rpm', sub {
 #    my %args = (
 #        name    => 'testpackage',
