@@ -48,17 +48,21 @@ subtest 'copy_to_tempdir', sub {
     is( $ret, 1, 'copy_to_tempdir succeeded' );
 };
 
-#subtest 'populate_opts', sub {
-#    my %args = (
-#        name    => 'testpackage',
-#        version => '3.2.1',
-#        files   => { bin => '/usr/local/bin' },
-#        os      => 'el6',
-#        fpm     => '/usr/local/bin/fpm' # dummy override on systems without fpm
-#    );
-#    my $obj = RPM::Packager->new(%args);
-#    is( $obj->populate_opts(), 'some_string_here', 'options generated successfully');
-#};
+subtest 'populate_opts', sub {
+    my %args = (
+        name    => 'testpackage',
+        version => '3.2.1',
+        files   => { bin => '/usr/local/bin' },
+        os      => 'el6',
+        fpm     => '/usr/local/bin/fpm'           # dummy override to set fpm path for testing
+    );
+    my $obj = RPM::Packager->new(%args);
+    like(
+        $obj->populate_opts(),
+        qr|/usr/local/bin/fpm -v 3.2.1 --rpm-user root --rpm-group root --iteration 1.el6 -n testpackage|,
+        'options generated successfully'
+    );
+};
 
 #subtest 'create_rpm', sub {
 #    my %args = (
