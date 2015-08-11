@@ -99,24 +99,20 @@ sub copy_to_tempdir {
 }
 
 sub populate_opts {
-    my $self = shift;
-    my $name = $self->{name};
-    my $version = $self->find_version();
-    my $release = $ENV{BUILD_NUMBER} || 1;
-    my $os = $self->{os};
-    my $iteration = "$release.$os";
+    my $self            = shift;
+    my $version         = $self->find_version();
+    my $release         = $ENV{BUILD_NUMBER} || 1;
+    my $os              = $self->{os};
+    my $iteration       = "$release.$os";
     my $dependency_opts = $self->generate_dependency_opts();
     my ( $user, $group ) = $self->generate_user_group();
-    my $tmpdir = $self->{tempdir};
 
     my @opts = (
-        $self->{fpm},  '-v',          $version,   '--rpm-user', $user,    '--rpm-group',
-        $group, '--iteration', $iteration, '-n',         $name, $dependency_opts,
-        '-s',   'dir',         '-t',       'rpm',        '-C',     $tmpdir,
+        $self->{fpm}, '-v',          $version,   '--rpm-user', $user,         '--rpm-group',
+        $group,       '--iteration', $iteration, '-n',         $self->{name}, $dependency_opts,
+        '-s',         'dir',         '-t',       'rpm',        '-C',          $self->{tempdir}
     );
-    #push @opts, '--rpm-sign', '--rpm-rpmbuild-define', "'_gpg_name E4D20D4C'" if ( $config->{sign} );
-    push @opts, $self->{cwd};
-    return join( " ", @opts );
+    return @opts;
 }
 
 =head2 create_rpm
@@ -129,6 +125,10 @@ sub create_rpm {
     my $self = shift;
 
     $self->copy_to_tempdir();
+    my @opts = $self->populate_opts();
+
+    #push @opts, '--rpm-sign', '--rpm-rpmbuild-define', "'_gpg_name E4D20D4C'" if ( $config->{sign} );
+    push @opts, $self->{cwd};
 }
 
 =head1 AUTHOR
