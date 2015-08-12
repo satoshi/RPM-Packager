@@ -112,7 +112,8 @@ sub populate_opts {
         $group,       '--iteration', $iteration, '-n',         $self->{name}, $dependency_opts,
         '-s',         'dir',         '-t',       'rpm',        '-C',          $self->{tempdir}
     );
-    return @opts;
+    push @opts, $self->{cwd};
+    $self->{opts} = [@opts];
 }
 
 =head2 create_rpm
@@ -125,10 +126,8 @@ sub create_rpm {
     my $self = shift;
 
     $self->copy_to_tempdir();
-    my @opts = $self->populate_opts();
-
+    $self->populate_opts();
     #push @opts, '--rpm-sign', '--rpm-rpmbuild-define', "'_gpg_name E4D20D4C'" if ( $config->{sign} );
-    push @opts, $self->{cwd};
 }
 
 =head1 AUTHOR

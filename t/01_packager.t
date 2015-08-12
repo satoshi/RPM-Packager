@@ -54,12 +54,13 @@ subtest 'populate_opts', sub {
         version => '3.2.1',
         files   => { bin => '/usr/local/bin' },
         os      => 'el6',
-        fpm     => '/usr/local/bin/fpm'           # dummy override to set fpm path for testing
+        fpm     => '/usr/local/bin/fpm'            # dummy override to set fpm path for testing
     );
     my $obj = RPM::Packager->new(%args);
+    $obj->populate_opts();
 
     like(
-        join( ' ', $obj->populate_opts() ),
+        join( ' ', @{ $obj->{opts} } ),
         qr|/usr/local/bin/fpm -v 3.2.1 --rpm-user root --rpm-group root --iteration 1.el6 -n testpackage|,
         'options generated successfully'
     );
