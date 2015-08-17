@@ -54,7 +54,7 @@ subtest 'populate_opts', sub {
         version => '3.2.1',
         files   => { bin => '/usr/local/bin' },
         os      => 'el6',
-        fpm     => '/usr/local/bin/fpm'            # dummy override to set fpm path for testing
+        fpm     => '/usr/local/bin/fpm'           # dummy override to set fpm path for testing
     );
     my $obj = RPM::Packager->new(%args);
     $obj->populate_opts();
@@ -64,6 +64,14 @@ subtest 'populate_opts', sub {
         qr|/usr/local/bin/fpm -v 3.2.1 --rpm-user root --rpm-group root --iteration 1.el6 -n testpackage|,
         'options generated successfully'
     );
+};
+
+subtest 'add_gpg_opts', sub {
+    my $gpg_name = 'E4D20D4C';
+    my %args     = ( sign => { gpg_name => $gpg_name } );
+    my $obj      = RPM::Packager->new(%args);
+    $obj->add_gpg_opts();
+    is( @{ $obj->{opts} }[2], "'_gpg_name $gpg_name'", 'got gpg name in the object' );
 };
 
 #subtest 'create_rpm', sub {

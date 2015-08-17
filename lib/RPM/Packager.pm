@@ -98,6 +98,17 @@ sub copy_to_tempdir {
     return 1;
 }
 
+sub add_gpg_opts {
+    my $self     = shift;
+    my $gpg_name = $self->{sign}->{gpg_name};
+
+    return unless ($gpg_name);
+
+    my $opts = $self->{opts} || [];
+    push @{$opts}, '--rpm-sign', '--rpm-rpmbuild-define', "'_gpg_name $gpg_name'";
+    $self->{opts} = $opts;
+}
+
 sub populate_opts {
     my $self            = shift;
     my $version         = $self->find_version();
@@ -112,8 +123,8 @@ sub populate_opts {
         $group,       '--iteration', $iteration, '-n',         $self->{name}, $dependency_opts,
         '-s',         'dir',         '-t',       'rpm',        '-C',          $self->{tempdir}
     );
-    push @opts, $self->{cwd};
     $self->{opts} = [@opts];
+    push @opts, $self->{cwd};
 }
 
 =head2 create_rpm
@@ -127,7 +138,6 @@ sub create_rpm {
 
     $self->copy_to_tempdir();
     $self->populate_opts();
-    #push @opts, '--rpm-sign', '--rpm-rpmbuild-define', "'_gpg_name E4D20D4C'" if ( $config->{sign} );
 }
 
 =head1 AUTHOR
