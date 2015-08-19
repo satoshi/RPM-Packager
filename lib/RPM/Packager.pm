@@ -99,14 +99,16 @@ sub copy_to_tempdir {
 }
 
 sub add_gpg_opts {
-    my $self     = shift;
-    my $gpg_name = $self->{sign}->{gpg_name};
+    my $self           = shift;
+    my $gpg_name       = $self->{sign}->{gpg_name};
+    my $passphrase_cmd = $self->{sign}->{passphrase_cmd};
 
-    return unless ($gpg_name);
+    return unless ( $gpg_name && $passphrase_cmd );
 
     my $opts = $self->{opts} || [];
     push @{$opts}, '--rpm-sign', '--rpm-rpmbuild-define', "'_gpg_name $gpg_name'";
-    $self->{opts} = $opts;
+    $self->{opts}           = $opts;
+    $self->{gpg_passphrase} = RPM::Packager::Utils::eval_command($passphrase_cmd);
 }
 
 sub populate_opts {

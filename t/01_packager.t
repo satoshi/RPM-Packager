@@ -68,10 +68,11 @@ subtest 'populate_opts', sub {
 
 subtest 'add_gpg_opts', sub {
     my $gpg_name = 'E4D20D4C';
-    my %args     = ( sign => { gpg_name => $gpg_name } );
+    my %args     = ( sign => { gpg_name => $gpg_name, passphrase_cmd => 'echo "foobar"' } );
     my $obj      = RPM::Packager->new(%args);
     $obj->add_gpg_opts();
     is( @{ $obj->{opts} }[2], "'_gpg_name $gpg_name'", 'got gpg name in the object' );
+    is( $obj->{gpg_passphrase}, 'foobar', 'got passphrase for gpg' );
 };
 
 #subtest 'create_rpm', sub {
