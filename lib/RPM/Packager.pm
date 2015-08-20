@@ -126,7 +126,8 @@ sub populate_opts {
         '-s',         'dir',         '-t',       'rpm',        '-C',          $self->{tempdir}
     );
     $self->{opts} = [@opts];
-    push @opts, $self->{cwd};
+    $self->add_gpg_opts();
+    push @{ $self->{opts} }, $self->{cwd};
 }
 
 =head2 create_rpm
