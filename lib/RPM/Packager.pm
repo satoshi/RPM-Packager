@@ -5,6 +5,7 @@ use warnings;
 use Data::Dumper;
 use File::Temp;
 use Cwd;
+use Expect;
 use RPM::Packager::Utils;
 
 =head1 NAME
@@ -128,6 +129,27 @@ sub populate_opts {
     $self->{opts} = [@opts];
     $self->add_gpg_opts();
     push @{ $self->{opts} }, $self->{cwd};
+}
+
+sub handle_interactive_prompt {
+    my $self = shift;
+    my $opts = $self->{opts};
+    my $cmd  = join( ' ', @{$opts} );
+    my $pass = $self->{gpg_passphrase};
+
+    my $exp = Expect->new();
+    $exp->spawn($cmd);
+    $exp->expect(
+        undef,
+        [
+            qr/Enter pass phrase:/i => sub {
+                my $exp = shift;
+                $exp->send("$pass\n");
+                exp_continue;
+              }
+        ]
+    );
+    return 1;
 }
 
 =head2 create_rpm

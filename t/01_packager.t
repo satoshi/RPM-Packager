@@ -8,6 +8,9 @@ use FindBin qw($Bin);
 use lib "$Bin/../lib";
 use RPM::Packager;
 
+no strict 'refs';
+no warnings 'redefine';
+
 subtest 'constructor', sub {
     my $obj = RPM::Packager->new();
     isa_ok( $obj, 'RPM::Packager', 'object created' );
@@ -73,6 +76,15 @@ subtest 'add_gpg_opts', sub {
     $obj->add_gpg_opts();
     is( @{ $obj->{opts} }[2], "'_gpg_name $gpg_name'", 'got gpg name in the object' );
     is( $obj->{gpg_passphrase}, 'foobar', 'got passphrase for gpg' );
+};
+
+subtest 'handle_interactive_prompt', sub {
+    my %args = ( sign => { gpg_name => 'foobar', passphrase_cmd => 'ls -la' } );
+    my $obj = RPM::Packager->new(%args);
+    $obj->add_gpg_opts();
+    local *{'Expect::spawn'}  = sub { return ''; };
+    local *{'Expect::expect'} = sub { return ''; };
+    is( $obj->handle_interactive_prompt(), 1, "this method isn't really testable" );
 };
 
 #subtest 'create_rpm', sub {
