@@ -87,6 +87,16 @@ subtest 'handle_interactive_prompt', sub {
     is( $obj->handle_interactive_prompt(), 1, "this method isn't really testable" );
 };
 
+subtest 'should_gpgsign', sub {
+    my $obj = RPM::Packager->new();
+    is( $obj->should_gpgsign(), 0, 'should not sign this' );
+
+    my %args = ( sign => { gpg_name => 'foobar', passphrase_cmd => 'ls -la' } );
+    $obj = RPM::Packager->new(%args);
+
+    is( $obj->should_gpgsign(), 1, 'should sign this' );
+};
+
 #subtest 'create_rpm', sub {
 #    my %args = (
 #        name    => 'testpackage',
