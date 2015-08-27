@@ -156,9 +156,7 @@ sub should_gpgsign {
     my $self           = shift;
     my $gpg_name       = $self->{sign}->{gpg_name};
     my $passphrase_cmd = $self->{sign}->{passphrase_cmd};
-
-    return 0 unless ( $gpg_name && $passphrase_cmd );
-    return 1;
+    ( $gpg_name && $passphrase_cmd ) ? 1 : 0;
 }
 
 =head2 create_rpm
