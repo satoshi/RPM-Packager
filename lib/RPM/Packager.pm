@@ -126,6 +126,7 @@ sub populate_opts {
         $group,       '--iteration', $iteration, '-n',         $self->{name}, $dependency_opts,
         '-s',         'dir',         '-t',       'rpm',        '-C',          $self->{tempdir}
     );
+
     $self->{opts} = [@opts];
     $self->add_gpg_opts();
     push @{ $self->{opts} }, $self->{cwd};
@@ -170,6 +171,16 @@ sub create_rpm {
 
     $self->copy_to_tempdir();
     $self->populate_opts();
+
+#    if ( $self->should_gpgsign() ) {
+#        $self->handle_interactive_prompt();
+#    }
+#    else {
+#        my $cmd = join( ' ', @{ $self->{opts} } );
+#        print Dumper($cmd);
+#        system($cmd);
+#    }
+    return 1;
 }
 
 =head1 AUTHOR

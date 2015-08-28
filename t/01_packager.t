@@ -97,16 +97,16 @@ subtest 'should_gpgsign', sub {
     is( $obj->should_gpgsign(), 1, 'should sign this' );
 };
 
-#subtest 'create_rpm', sub {
-#    my %args = (
-#        name    => 'testpackage',
-#        version => 'grep Changelog',
-#        files   => { bin => '/usr/local/bin' },
-#        os      => 'el6',
-#    );
-#    my $obj = RPM::Packager->new(%args);
-#    my $ret = $obj->create_rpm();
-#    is( $ret, 1, 'RPM created successfully' );
-#};
+subtest 'create_rpm', sub {
+    my %args = (
+        name    => 'testpackage',
+        version => 'grep Changelog',
+        os      => 'el6',
+        files   => { "t/test_data" => '/usr/local/bin' }
+    );
+    my $obj = RPM::Packager->new(%args);
+    my $ret = $obj->create_rpm();
+    is( $ret, 1, 'RPM created successfully' );
+};
 
 done_testing();
