@@ -172,14 +172,13 @@ sub create_rpm {
     $self->copy_to_tempdir();
     $self->populate_opts();
 
-#    if ( $self->should_gpgsign() ) {
-#        $self->handle_interactive_prompt();
-#    }
-#    else {
-#        my $cmd = join( ' ', @{ $self->{opts} } );
-#        print Dumper($cmd);
-#        system($cmd);
-#    }
+    if ( $self->should_gpgsign() ) {
+        $self->handle_interactive_prompt();
+    }
+    else {
+        my $cmd = join( ' ', @{ $self->{opts} } );
+        system($cmd);
+    }
     return 1;
 }
 

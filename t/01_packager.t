@@ -100,7 +100,7 @@ subtest 'should_gpgsign', sub {
 subtest 'create_rpm', sub {
     my %args = (
         name    => 'testpackage',
-        version => 'grep Changelog',
+        version => '1.0.0',
         os      => 'el6',
         files   => { "t/test_data" => '/usr/local/bin' }
     );
