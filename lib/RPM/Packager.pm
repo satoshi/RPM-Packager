@@ -129,7 +129,7 @@ sub populate_opts {
 
     $self->{opts} = [@opts];
     $self->add_gpg_opts();
-    push @{ $self->{opts} }, $self->{cwd};
+    push @{ $self->{opts} }, '.';                              # relative to the temporary directory
 }
 
 sub handle_interactive_prompt {
