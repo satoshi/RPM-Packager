@@ -30,8 +30,19 @@ Building RPMs should be easy.
         name    => 'testpackage',
         version => 'grep Changelog',
         files   => { bin => '/usr/local/bin' },
+        dependencies => [
+            'perl-YAML > 0.5',
+            'perl-JSON'
+        ],
         os      => 'el6',
+        user    => 'apache',
+        group   => 'apache',
+        sign    => {
+            'gpg_name' => 'ED16CAB',
+            'passphrase_cmd' => 'cat secret_file'
+        }
     );
+
     my $obj = RPM::Packager->new(%args);
     $obj->create_rpm();
 
@@ -129,7 +140,7 @@ sub populate_opts {
 
     $self->{opts} = [@opts];
     $self->add_gpg_opts();
-    push @{ $self->{opts} }, '.';                              # relative to the temporary directory
+    push @{ $self->{opts} }, '.';    # relative to the temporary directory
 }
 
 sub handle_interactive_prompt {
