@@ -24,11 +24,14 @@ our $VERSION = 'v0.0.1';
 
 Building RPMs should be easy.
 
+This is a manifest-based approach to easily create RPMs.  Note that you need to have fpm available in PATH.  For GPG
+signing, you need to have proper keys imported.
+
     use RPM::Packager;
 
     my %args = (
         name    => 'testpackage',
-        version => 'grep Changelog',
+        version => 'grep Changelog', # can be a string or a command
         files   => { bin => '/usr/local/bin' },
         dependencies => [
             'perl-YAML > 0.5',
@@ -39,7 +42,7 @@ Building RPMs should be easy.
         group   => 'apache',
         sign    => {
             'gpg_name' => 'ED16CAB',
-            'passphrase_cmd' => 'cat secret_file'
+            'passphrase_cmd' => 'cat secret_file' # has to be a command to retrieve the secret for signing
         }
     );
 
