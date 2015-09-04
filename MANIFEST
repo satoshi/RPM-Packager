@@ -1,4 +1,5 @@
 Changes
+bin/rpm_packager.pl
 lib/RPM/Packager.pm
 Makefile.PL
 MANIFEST			This list of files

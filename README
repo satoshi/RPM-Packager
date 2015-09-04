@@ -1,15 +1,31 @@
 RPM-Packager
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+Building RPMs should be easy.
 
-A README file is required for CPAN modules since CPAN extracts the README
-file from a module distribution so that people browsing the archive
-can use it to get an idea of the module's uses. It is usually a good idea
-to provide version information here so that people can decide whether
-fixes for the module are worth downloading.
+This is a manifest-based approach to easily create RPMs.  Note that you need to have fpm available in PATH.  For GPG
+signing, you need to have proper keys imported.
+
+    use RPM::Packager;
+
+    my %args = (
+        name    => 'testpackage',
+        version => 'grep Changelog', # can be a string or a command
+        files   => { bin => '/usr/local/bin' },
+        dependencies => [
+            'perl-YAML > 0.5',
+            'perl-JSON'
+        ],
+        os      => 'el6',
+        user    => 'apache',
+        group   => 'apache',
+        sign    => {
+            'gpg_name' => 'ED16CAB',
+            'passphrase_cmd' => 'cat secret_file' # has to be a command to retrieve the secret for signing
+        }
+    );
+
+    my $obj = RPM::Packager->new(%args);
+    $obj->create_rpm();
 
 
 INSTALLATION

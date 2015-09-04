@@ -4,13 +4,13 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME             => 'RPM::Packager',
-    AUTHOR           => q{Satoshi Yagi <satoshi.yagi@yahoo.com>},
-    VERSION_FROM     => 'lib/RPM/Packager.pm',
-    ABSTRACT_FROM    => 'lib/RPM/Packager.pm',
-    LICENSE          => 'artistic_2',
-    PL_FILES         => {},
-    MIN_PERL_VERSION => 5.006,
+    NAME               => 'RPM::Packager',
+    AUTHOR             => q{Satoshi Yagi <satoshi.yagi@yahoo.com>},
+    VERSION_FROM       => 'lib/RPM/Packager.pm',
+    ABSTRACT_FROM      => 'lib/RPM/Packager.pm',
+    LICENSE            => 'artistic_2',
+    PL_FILES           => {},
+    MIN_PERL_VERSION   => 5.006,
     CONFIGURE_REQUIRES => {
         'ExtUtils::MakeMaker' => 0,
     },
@@ -18,9 +18,8 @@ WriteMakefile(
         'Test::More' => 0,
     },
     PREREQ_PM => {
-        #'ABC'              => 1.6,
-        #'Foo::Bar::Module' => 5.0401,
+        'Expect' => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean => { FILES => 'RPM-Packager-*' },
+    clean => { FILES    => 'RPM-Packager-*' },
 );
