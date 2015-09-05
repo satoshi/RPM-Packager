@@ -17,6 +17,7 @@ WriteMakefile(
     BUILD_REQUIRES => {
         'Test::More' => 0,
     },
+    EXE_FILES => ['bin/rpm_packager.pl'],
     PREREQ_PM => {
         'Expect' => 0,
     },

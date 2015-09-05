@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 use YAML;
+use FindBin qw($Bin);
+use lib "$Bin/../lib";
 use RPM::Packager;
 
 my $arg = shift;

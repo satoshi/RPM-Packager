@@ -14,25 +14,33 @@ RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.0.2
+Version 0.0.3
 
 =cut
 
-our $VERSION = 'v0.0.2';
+our $VERSION = 'v0.0.3';
 
 =head1 SYNOPSIS
 
 Building RPMs should be easy.
 
-This is a manifest-based approach to easily create RPMs.  Note that you need to have fpm available in PATH.  For GPG
+This is a manifest approach to easily create custom RPMs.  Once this module is installed, building RPMs should be as
+simple as running:
+
+/usr/bin/rpm_packager.pl <path_to_manifest_yaml>
+
+Note that you need to have fpm available in PATH.  For GPG
 signing, you need to have proper keys imported.
+
+The manifest is a simple data structure that looks like the following.  The following example describes usage of
+directly feeding to the library instead of the wrapper.
 
     use RPM::Packager;
 
     my %args = (
         name    => 'testpackage',
-        version => 'grep Changelog', # can be a string or a command
-        files   => { bin => '/usr/local/bin' },
+        version => 'grep Changelog',              # can be a string or a command
+        files   => { bin => '/usr/local/bin' },   # files under CWD/bin will be installed under /usr/local/bin
         dependencies => [
             'perl-YAML > 0.5',
             'perl-JSON'
@@ -47,7 +55,7 @@ signing, you need to have proper keys imported.
     );
 
     my $obj = RPM::Packager->new(%args);
-    $obj->create_rpm();
+    $obj->create_rpm();                           # RPM produced in CWD
 
 =head1 SUBROUTINES/METHODS
 
