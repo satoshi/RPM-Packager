@@ -14,11 +14,11 @@ RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.0.3
+Version 0.0.4
 
 =cut
 
-our $VERSION = 'v0.0.3';
+our $VERSION = 'v0.0.4';
 
 =head1 SYNOPSIS
 
@@ -27,13 +27,12 @@ Building RPMs should be easy.
 This is a manifest approach to easily create custom RPMs.  Once this module is installed, building RPMs should be as
 simple as running:
 
-/usr/bin/rpm_packager.pl <path_to_manifest_yaml>
+rpm_packager.pl <path_to_manifest.yml>
 
-Note that you need to have fpm available in PATH.  For GPG
-signing, you need to have proper keys imported.
+Note that you need to have fpm available in PATH.  For GPG signing, you need to have proper keys imported.
 
 The manifest is a simple data structure that looks like the following.  The following example describes usage of
-directly feeding to the library instead of the wrapper.
+directly feeding the library instead of the wrapper.
 
     use RPM::Packager;
 

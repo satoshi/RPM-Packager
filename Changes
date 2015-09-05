@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.0.4   2015/9/4
+        Fixing up the language of POD
+
 0.0.3   2015/9/4
         Tweaking Makefile.PL to distribute the driver script
 
