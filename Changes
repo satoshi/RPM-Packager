@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.0.5   2015/9/6
+        Adding docs on YAML file creation
+
 0.0.4   2015/9/4
         Fixing up the language of POD
 

@@ -14,32 +14,49 @@ RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.0.4
+Version 0.0.5
 
 =cut
 
-our $VERSION = 'v0.0.4';
+our $VERSION = 'v0.0.5';
 
 =head1 SYNOPSIS
 
 Building RPMs should be easy.
 
 This is a manifest approach to easily create custom RPMs.  Once this module is installed, building RPMs should be as
-simple as running:
+simple as writing a YAML file that looks like the following:
 
+---
+name: testpackage
+version: grep Changelog             # version string or some command to retrieve it
+os: el6
+dependencies:
+  - perl-YAML > 0.5
+  - perl-JSON
+files:
+  bin: /usr/local/bin               # directory-based mapping.  RPM will install CWD/bin/* to /usr/local/bin.
+user: apache                        # specify the owner of files.  default: root
+group: apache                       # specify the group owner of files.  default: root
+sign:                               # optionally, gpg signing of RPM
+  gpg_name: ED16CAB                 # provide the GPG key ID
+  passphrase_cmd: cat secret_file   # command to retrieve the secret
+
+Then run:
 rpm_packager.pl <path_to_manifest.yml>
 
-Note that you need to have fpm available in PATH.  For GPG signing, you need to have proper keys imported.
+Note : You need to have fpm available in PATH.  For GPG signing, you need to have proper keys imported.
+Note2: The 'iteration' field of RPM will be determined by the BUILD_NUMBER env variable plus 'os' field, like '150.el7'.
+If BUILD_NUMBER is unavailable, 1 will be used.
 
-The manifest is a simple data structure that looks like the following.  The following example describes usage of
-directly feeding the library instead of the wrapper.
+You may also interact with the library directly as long as you pass in the manifest information in a hash:
 
     use RPM::Packager;
 
     my %args = (
         name    => 'testpackage',
-        version => 'grep Changelog',              # can be a string or a command
-        files   => { bin => '/usr/local/bin' },   # files under CWD/bin will be installed under /usr/local/bin
+        version => 'grep Changelog',
+        files   => { bin => '/usr/local/bin' },
         dependencies => [
             'perl-YAML > 0.5',
             'perl-JSON'
@@ -49,7 +66,7 @@ directly feeding the library instead of the wrapper.
         group   => 'apache',
         sign    => {
             'gpg_name' => 'ED16CAB',
-            'passphrase_cmd' => 'cat secret_file' # has to be a command to retrieve the secret for signing
+            'passphrase_cmd' => 'cat secret_file'
         }
     );
 
@@ -168,7 +185,7 @@ sub handle_interactive_prompt {
                 my $exp = shift;
                 $exp->send("$pass\n");
                 exp_continue;
-              }
+            }
         ]
     );
     return 1;
