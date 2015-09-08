@@ -5,23 +5,24 @@ Building RPMs should be easy.
 This is a manifest approach to easily create custom RPMs.  Once this module is installed, building RPMs should be as
 simple as writing a YAML file that looks like the following:
 
----
-name: testpackage
-version: grep Changelog             # version string or some command to retrieve it
-os: el6
-dependencies:
-  - perl-YAML > 0.5
-  - perl-JSON
-files:
-  bin: /usr/local/bin               # directory-based mapping.  RPM will install CWD/bin/* to /usr/local/bin.
-user: apache                        # specify the owner of files.  default: root
-group: apache                       # specify the group owner of files.  default: root
-sign:                               # optionally, gpg signing of RPM
-  gpg_name: ED16CAB                 # provide the GPG key ID
-  passphrase_cmd: cat secret_file   # command to retrieve the secret
+    ---
+    name: testpackage
+    version: grep Changelog             # version string or some command to retrieve it
+    os: el6
+    dependencies:
+      - perl-YAML > 0.5
+      - perl-JSON
+    files:
+      bin: /usr/local/bin               # directory-based mapping.  RPM will install CWD/bin/* to /usr/local/bin.
+    user: apache                        # specify the owner of files.  default: root
+    group: apache                       # specify the group owner of files.  default: root
+    sign:                               # optionally, gpg signing of RPM
+      gpg_name: ED16CAB                 # provide the GPG key ID
+      passphrase_cmd: cat secret_file   # command to retrieve the secret
 
 Then run:
-rpm_packager.pl <path_to_manifest.yml>
+
+    rpm_packager.pl <path_to_manifest.yml>
 
 Note : You need to have fpm available in PATH.  For GPG signing, you need to have proper keys imported.
 Note2: The 'iteration' field of RPM will be determined by the BUILD_NUMBER env variable plus 'os' field, like '150.el7'.
