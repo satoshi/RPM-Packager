@@ -47,6 +47,7 @@ Then run:
     rpm_packager.pl <path_to_manifest.yml>
 
 Note : You need to have fpm available in PATH.  For GPG signing, you need to have proper keys imported.
+
 Note2: The 'iteration' field of RPM will be determined by the BUILD_NUMBER env variable plus 'os' field, like '150.el7'.
 If BUILD_NUMBER is unavailable, 1 will be used.
 
