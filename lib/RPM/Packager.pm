@@ -14,11 +14,11 @@ RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.0.8
+Version 0.0.9
 
 =cut
 
-our $VERSION = 'v0.0.8';
+our $VERSION = 'v0.0.9';
 
 =head1 SYNOPSIS
 
@@ -30,7 +30,7 @@ simple as writing a YAML file that looks like the following:
     ---
     name: testpackage
     version: grep Changelog             # version string or some command to retrieve it
-    os: el6
+    os: el6                             # optional, don't specify anything if package is os-independent
     dependencies:
       - perl-YAML > 0.5
       - perl-JSON
@@ -48,8 +48,8 @@ Then run:
 
 Note : You need to have fpm available in PATH.  For GPG signing, you need to have proper keys imported.
 
-Note2: The 'iteration' field of RPM will be determined by the BUILD_NUMBER env variable plus 'os' field, like '150.el7'.
-If BUILD_NUMBER is unavailable, 1 will be used.
+Note2: The 'release' field of RPM will be determined by the BUILD_NUMBER env variable plus 'os' field, like '150.el7'.
+If BUILD_NUMBER is unavailable, 1 will be used.  If os is unspecified, nothing will be appended.
 
 You may also interact with the library directly as long as you pass in the manifest information in a hash:
 
@@ -157,7 +157,7 @@ sub populate_opts {
     my $version         = $self->find_version();
     my $release         = $ENV{BUILD_NUMBER} || 1;
     my $os              = $self->{os};
-    my $iteration       = "$release.$os";
+    my $iteration       = ($os) ? "$release.$os" : $release;
     my $dependency_opts = $self->generate_dependency_opts();
     my ( $user, $group ) = $self->generate_user_group();
 
@@ -187,7 +187,7 @@ sub handle_interactive_prompt {
                 my $exp = shift;
                 $exp->send("$pass\n");
                 exp_continue;
-            }
+              }
         ]
     );
     return 1;
