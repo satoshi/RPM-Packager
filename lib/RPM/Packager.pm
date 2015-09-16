@@ -14,11 +14,11 @@ RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.0.9
+Version 0.0.10
 
 =cut
 
-our $VERSION = 'v0.0.9';
+our $VERSION = 'v0.0.10';
 
 =head1 SYNOPSIS
 
@@ -85,7 +85,7 @@ Constructor.  Pass in a hash containing manifest info.
 
 sub new {
     my ( $class, %args ) = @_;
-    chomp( my $fpm   = `which fpm` );
+    chomp( my $fpm   = `which fpm 2>/dev/null` );
     chomp( my $mkdir = `which mkdir` );
     chomp( my $cp    = `which cp` );
 
