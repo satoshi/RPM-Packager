@@ -152,6 +152,15 @@ sub add_gpg_opts {
     $self->{gpg_passphrase} = RPM::Packager::Utils::eval_command($passphrase_cmd);
 }
 
+sub add_after_install {
+    my $self = shift;
+    return unless ( $self->{after_install} );
+
+    my $opts = $self->{opts} || [];
+    push @{$opts}, '--after-install', $self->{after_install};
+    $self->{opts} = $opts;
+}
+
 sub populate_opts {
     my $self            = shift;
     my $version         = $self->find_version();

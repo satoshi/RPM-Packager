@@ -78,6 +78,13 @@ subtest 'add_gpg_opts', sub {
     is( $obj->{gpg_passphrase}, 'foobar', 'got passphrase for gpg' );
 };
 
+subtest 'add_after_install', sub {
+    my %args = ( after_install => '/some/path/to/script' );
+    my $obj = RPM::Packager->new(%args);
+    $obj->add_after_install();
+    is_deeply( $obj->{opts}, [ '--after-install', '/some/path/to/script' ] );
+};
+
 subtest 'handle_interactive_prompt', sub {
     my %args = ( sign => { gpg_name => 'foobar', passphrase_cmd => 'ls -la' } );
     my $obj = RPM::Packager->new(%args);
