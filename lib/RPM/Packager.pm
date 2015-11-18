@@ -178,6 +178,7 @@ sub populate_opts {
 
     $self->{opts} = [@opts];
     $self->add_gpg_opts();
+    $self->add_after_install();
     push @{ $self->{opts} }, '.';    # relative to the temporary directory
 }
 
