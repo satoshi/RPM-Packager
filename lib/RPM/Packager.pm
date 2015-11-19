@@ -14,11 +14,11 @@ RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.0.10
+Version 0.1.0
 
 =cut
 
-our $VERSION = 'v0.0.10';
+our $VERSION = 'v0.1.0';
 
 =head1 SYNOPSIS
 
@@ -41,6 +41,7 @@ simple as writing a YAML file that looks like the following:
     sign:                               # optionally, gpg signing of RPM
       gpg_name: ED16CAB                 # provide the GPG key ID
       passphrase_cmd: cat secret_file   # command to retrieve the secret
+    after_install: /path/to/script      # script to run after the package is installed (%post)
 
 Then run:
 
@@ -69,7 +70,8 @@ You may also interact with the library directly as long as you pass in the manif
         sign    => {
             'gpg_name' => 'ED16CAB',
             'passphrase_cmd' => 'cat secret_file'
-        }
+        },
+        after_install => 'foo/bar/baz.sh'
     );
 
     my $obj = RPM::Packager->new(%args);

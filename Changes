@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.1.0   2015/11/18
+        Added after_install to run a script after package installation (%post)
+
 0.0.10  2015/9/16
         Sending STDERR from which command to /dev/null
 
