@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.1.1   2015/12/1
+        Adding test data in MANIFEST for tests
+
 0.1.0   2015/11/18
         Added after_install to run a script after package installation (%post)
 

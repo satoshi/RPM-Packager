@@ -7,3 +7,5 @@ MANIFEST			This list of files
 README
 t/01_packager.t
 t/02_utils.t
+t/test_data/test_file
+t/test_data/test_yaml.yml
