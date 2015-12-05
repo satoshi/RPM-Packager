@@ -105,13 +105,8 @@ subtest 'should_gpgsign', sub {
 };
 
 subtest 'create_rpm', sub {
-    my %args = (
-        name    => 'testpackage',
-        version => '1.0.0',
-        os      => 'el6',
-        files   => { "t/test_data" => '/usr/local/bin' }
-    );
-    my $obj = RPM::Packager->new(%args);
+    my $obj = RPM::Packager->new();
+    local *{'RPM::Packager::create_rpm'} = sub { return 1; };
     my $ret = $obj->create_rpm();
     is( $ret, 1, 'RPM created successfully' );
 };

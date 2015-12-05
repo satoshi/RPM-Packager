@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.1.2   2015/12/5
+        Mocking out create_rpm test
+
 0.1.1   2015/12/1
         Adding test data in MANIFEST for tests
 

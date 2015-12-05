@@ -14,11 +14,11 @@ RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.1.1
+Version 0.1.2
 
 =cut
 
-our $VERSION = 'v0.1.1';
+our $VERSION = 'v0.1.2';
 
 =head1 SYNOPSIS
 
