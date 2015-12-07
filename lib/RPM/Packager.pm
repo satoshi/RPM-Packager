@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use File::Temp;
+use File::Path qw(make_path);
 use Cwd;
 use Expect;
 use RPM::Packager::Utils;
@@ -87,13 +88,11 @@ Constructor.  Pass in a hash containing manifest info.
 
 sub new {
     my ( $class, %args ) = @_;
-    chomp( my $fpm   = `which fpm 2>/dev/null` );
-    chomp( my $mkdir = `which mkdir` );
-    chomp( my $cp    = `which cp` );
+    chomp( my $fpm = `which fpm 2>/dev/null` );
+    chomp( my $cp  = `which cp` );
 
     my $self = {
         fpm     => $fpm,
-        mkdir   => $mkdir,
         cp      => $cp,
         cwd     => getcwd(),
         tempdir => File::Temp->newdir(),
@@ -135,7 +134,7 @@ sub copy_to_tempdir {
     for my $key ( keys %hash ) {
         my $dst        = $hash{$key};
         my $target_dir = "$tempdir$dst";
-        system("$self->{mkdir} -p $target_dir");
+        make_path($target_dir);
         system("$self->{cp} -r $cwd/$key/* $target_dir");
     }
     return 1;
