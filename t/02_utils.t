@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use Data::Dumper;
 use Test::More;
 use FindBin qw($Bin);
 use lib "$Bin/../lib";
@@ -14,6 +15,11 @@ subtest 'is_command', sub {
 
 subtest 'eval_command', sub {
     is( RPM::Packager::Utils::eval_command('echo foobar'), 'foobar', 'eval command worked' );
+};
+
+subtest 'find_files', sub {
+    my @files = RPM::Packager::Utils::find_files("$Bin/test_data");
+    is( grep( /test_yaml/, @files ), 1, 'found test file' );
 };
 
 done_testing();
