@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.2.0   2015/12/10
+        Replaced some system calls with Perl implementation
+
 0.1.2   2015/12/5
         Mocking out create_rpm test
 
