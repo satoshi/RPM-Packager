@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.2.1   2015/12/14
+        Fixing a bug introduced in 0.2.0
+
 0.2.0   2015/12/10
         Replaced some system calls with Perl implementation
 
