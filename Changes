@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.3.1   2015/12/24
+        Emulating copy is tricky when dealing with hidden files / directories
+
 0.3.0   2015/12/22
         Attempting to go pure Perl for copying files
 
