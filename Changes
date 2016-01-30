@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.3.2   2016/1/29
+        Updating POD to discuss shellscript for after_install
+
 0.3.1   2015/12/24
         Emulating copy is tricky when dealing with hidden files / directories
 

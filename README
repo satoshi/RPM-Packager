@@ -19,7 +19,7 @@ simple as writing a YAML file that looks like the following:
     sign:                               # optionally, gpg signing of RPM
       gpg_name: ED16CAB                 # provide the GPG key ID
       passphrase_cmd: cat secret_file   # command to retrieve the secret
-    after_install: /path/to/script      # script to run after the package is installed (%post)
+    after_install: path/to/script       # shellscript to run after the package is installed (%post)
 
 Then run:
 
