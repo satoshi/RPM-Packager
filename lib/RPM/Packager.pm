@@ -15,11 +15,11 @@ RPM::Packager - Manifest-based approach for building RPMs
 
 =head1 VERSION
 
-Version 0.3.2
+Version 0.3.3
 
 =cut
 
-our $VERSION = 'v0.3.2';
+our $VERSION = 'v0.3.3';
 
 =head1 SYNOPSIS
 
@@ -43,6 +43,7 @@ simple as writing a YAML file that looks like the following:
       gpg_name: ED16CAB                 # provide the GPG key ID
       passphrase_cmd: cat secret_file   # command to retrieve the secret
     after_install: path/to/script       # shellscript to run after the package is installed (%post)
+    architecture: noarch                # specify the architecture for this package (default: x86_64)
 
 Then run:
 
@@ -72,7 +73,8 @@ You may also interact with the library directly as long as you pass in the manif
             'gpg_name' => 'ED16CAB',
             'passphrase_cmd' => 'cat secret_file'
         },
-        after_install => 'foo/bar/baz.sh'
+        after_install => 'foo/bar/baz.sh',
+        architecture => 'noarch'
     );
 
     my $obj = RPM::Packager->new(%args);
@@ -169,12 +171,14 @@ sub populate_opts {
     my $os              = $self->{os};
     my $iteration       = ($os) ? "$release.$os" : $release;
     my $dependency_opts = $self->generate_dependency_opts();
+    my $architecture    = $self->{architecture} || 'x86_64';
     my ( $user, $group ) = $self->generate_user_group();
 
     my @opts = (
         $self->{fpm}, '-v',          $version,   '--rpm-user', $user,         '--rpm-group',
         $group,       '--iteration', $iteration, '-n',         $self->{name}, $dependency_opts,
-        '-s',         'dir',         '-t',       'rpm',        '-C',          $self->{tempdir}
+        '-s',         'dir',         '-t',       'rpm',        '-a',          $architecture,
+        '-C',         $self->{tempdir}
     );
 
     $self->{opts} = [@opts];
@@ -198,7 +202,7 @@ sub handle_interactive_prompt {
                 my $exp = shift;
                 $exp->send("$pass\n");
                 exp_continue;
-              }
+            }
         ]
     );
     return 1;

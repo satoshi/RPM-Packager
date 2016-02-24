@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.3.3   2016/2/23
+        Added architecture to the stanza
+
 0.3.2   2016/1/29
         Updating POD to discuss shellscript for after_install
 
