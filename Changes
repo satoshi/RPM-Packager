@@ -1,5 +1,8 @@
 Revision history for RPM-Packager
 
+0.3.5   2016/3/5
+        Fixing up license information in Makefile.PL
+
 0.3.4   2016/3/5
         Updating license information
 
